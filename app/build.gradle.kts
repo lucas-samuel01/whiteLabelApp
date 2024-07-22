@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.dagger.hilt)
+    alias(libs.plugins.google.services)
     id("kotlin-kapt")
 
 }
@@ -79,7 +80,8 @@ dependencies {
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
-
+    //firebase
+    implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
     // dagger-hilt
     implementation(libs.dagger.hilt)
     kapt(libs.hilt.compiler)
