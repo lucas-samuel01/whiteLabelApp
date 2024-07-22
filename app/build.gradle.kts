@@ -20,6 +20,7 @@ android {
     }
 
     buildTypes {
+
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -37,6 +38,22 @@ android {
     }
     viewBinding {
         enable = true
+    }
+    flavorDimensions += listOf("product","sidePersona")
+
+    productFlavors {
+        create("bike"){
+            dimension = "product"
+        }
+            create("car"){
+            dimension = "product"
+        }
+        create("client"){
+            dimension = "sidePersona"
+        }
+        create("admin"){
+            dimension = "sidePersona"
+        }
     }
 }
 
