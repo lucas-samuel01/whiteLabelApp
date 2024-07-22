@@ -1,4 +1,4 @@
-package br.com.douglasmotta.whitelabeltutorial.ui.products
+package com.lucas.whitelabelapp.ui.products
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -20,4 +20,5 @@ class ProductsFragment : Fragment() {
         _binding = FragmentProductsBinding.inflate(inflater, container, false)
         return binding.root
     }
+
 }

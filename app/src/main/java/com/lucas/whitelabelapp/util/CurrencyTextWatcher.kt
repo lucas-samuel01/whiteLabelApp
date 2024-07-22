@@ -1,4 +1,4 @@
-package br.com.douglasmotta.whitelabeltutorial.util
+package com.lucas.whitelabelapp.util
 
 import android.text.Editable
 import android.text.TextWatcher

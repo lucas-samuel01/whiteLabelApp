@@ -1,8 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    alias(libs.plugins.ksp)
     alias(libs.plugins.dagger.hilt)
+    id("kotlin-kapt")
+
 }
 
 android {
@@ -15,7 +16,6 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -39,20 +39,32 @@ android {
     viewBinding {
         enable = true
     }
-    flavorDimensions += listOf("product","sidePersona")
+    flavorDimensions += listOf<String>("product","sidePersona")
 
     productFlavors {
-        create("bike"){
+        create("bike") {
             dimension = "product"
+            applicationIdSuffix = ".bike"
+            manifestPlaceholders["appName"] = "Bike"
         }
-            create("car"){
+        create("car"){
             dimension = "product"
+            applicationIdSuffix = ".car"
+            manifestPlaceholders["appName"] = "Car"
         }
         create("client"){
             dimension = "sidePersona"
+            manifestPlaceholders["appNameSuffix"] = ""
         }
         create("admin"){
             dimension = "sidePersona"
+            applicationIdSuffix = ".admin"
+            manifestPlaceholders["appNameSuffix"] = ".Admin"
+        }
+    }
+    packaging {
+        resources {
+            excludes.add("META-INF/gradle/incremental.annotation.processors")
         }
     }
 }
@@ -70,7 +82,7 @@ dependencies {
 
     // dagger-hilt
     implementation(libs.dagger.hilt)
-    implementation(libs.hilt.compiler)
+    kapt(libs.hilt.compiler)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

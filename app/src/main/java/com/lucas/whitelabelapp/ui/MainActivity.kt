@@ -1,4 +1,4 @@
-package br.com.douglasmotta.whitelabeltutorial.ui
+package com.lucas.whitelabelapp.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

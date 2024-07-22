@@ -1,4 +1,4 @@
-package br.com.douglasmotta.whitelabeltutorial.util
+package com.lucas.whitelabelapp.util
 
 import java.text.DecimalFormat
 
