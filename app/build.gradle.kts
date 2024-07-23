@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.dagger.hilt)
     alias(libs.plugins.google.services)
+    alias(libs.plugins.kotlin.parcelize)
     id("kotlin-kapt")
 
 }
@@ -30,6 +31,10 @@ android {
             )
         }
     }
+    buildFeatures {
+        buildConfig = true
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -47,11 +52,14 @@ android {
             dimension = "product"
             applicationIdSuffix = ".bike"
             manifestPlaceholders["appName"] = "Bike"
+            buildConfigField("String", "FIREBASE_FLAVOR_COLLECTION", "\"bike\"")
         }
         create("car"){
             dimension = "product"
             applicationIdSuffix = ".car"
             manifestPlaceholders["appName"] = "Car"
+            buildConfigField("String", "FIREBASE_FLAVOR_COLLECTION", "\"car\"")
+
         }
         create("client"){
             dimension = "sidePersona"
@@ -81,7 +89,10 @@ dependencies {
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
     //firebase
-    implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.firestore.ktx)
+    implementation(libs.firebase.storage.ktx)
+
     // dagger-hilt
     implementation(libs.dagger.hilt)
     kapt(libs.hilt.compiler)
