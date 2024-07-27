@@ -10,10 +10,11 @@ import com.lucas.whitelabelapp.util.COLLECTION_PRODUCTS
 import com.lucas.whitelabelapp.util.COLLECTION_ROOT
 import com.lucas.whitelabelapp.util.STORAGE_IMAGES
 import java.util.UUID
+import javax.inject.Inject
 import kotlin.coroutines.suspendCoroutine
 
 
-class FireBaseProjectDataSource(
+class FireBaseProjectDataSource @Inject constructor(
     fireBaseFireStore:FirebaseFirestore,
     fireBaseStorage:FirebaseStorage
 ):ProductDataSource {
