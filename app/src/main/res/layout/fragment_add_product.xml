@@ -18,7 +18,9 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/background_product_image" />
+        app:srcCompat="@drawable/background_product_item"
+        android:src="@drawable/ic_add_a_photo"
+        />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_layout_description"

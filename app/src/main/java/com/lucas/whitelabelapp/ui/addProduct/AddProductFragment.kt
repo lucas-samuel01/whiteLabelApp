@@ -3,15 +3,18 @@ package com.lucas.whitelabelapp.ui.addProduct
 import android.net.Uri
 import androidx.fragment.app.viewModels
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.textfield.TextInputLayout
 import com.lucas.whitelabelapp.databinding.FragmentAddProductBinding
 import com.lucas.whitelabelapp.util.CurrencyTextWatcher
+import com.lucas.whitelabelapp.util.PRODUCT_KEY
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -50,6 +53,15 @@ class AddProductFragment : BottomSheetDialogFragment() {
         }
         viewModel.descriptionFieldErrorResId.observe(viewLifecycleOwner){ stringResId ->
             binding.inputLayoutDescription.setError(stringResId)
+        }
+
+        viewModel.productCreated.observe(viewLifecycleOwner){product ->
+            findNavController().run{
+                Log.d("entrou AQUI","FIND NAV CONTROLLER")
+                previousBackStackEntry?.savedStateHandle?.set(PRODUCT_KEY, product)
+                popBackStack()
+            }
+
         }
     }
 
