@@ -1,5 +1,4 @@
-name: Build & upload to Firebase App Distribution
-
+name: Build & upload All apps to firebase
 on:
   workflow_dispatch:
     inputs:
@@ -35,7 +34,7 @@ jobs:
          APP_ID="FIREBASE_APP_ID_${PRODUCT^^}_${SIDEPERSONA^^}"
          echo "APP_ID=$APP_ID" >> $GITHUB_ENV
 
-ç
+
       - name: upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
