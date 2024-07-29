@@ -29,7 +29,11 @@ jobs:
         run: ./gradlew :app:assembleDebug{{ matrix.product }}${{ matrix.sidePersona }}Debug
 
       - name: Set environment variable for APP_ID
-        run: echo "APP_ID=FIREBASE_APP_ID_${{ matrix.product.toUpperCase() }}_${{ matrix.sidePersona.toUpperCase() }}" >> $GITHUB_ENV
+        run: |
+         PRODUCT=${{ matrix.product }}
+         SIDEPERSONA=${{ matrix.sidePersona }}
+         APP_ID="FIREBASE_APP_ID_${PRODUCT^^}_${SIDEPERSONA^^}"
+         echo "APP_ID=$APP_ID" >> $GITHUB_ENV
 
 
       - name: upload artifact to Firebase App Distribution
