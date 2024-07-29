@@ -16,7 +16,7 @@ jobs:
     strategy:
       matrix:
         product: ['bike', 'car']
-        sidePersona: ['client', 'admin']
+        sidePersona: ['Client', 'Admin']
 
     steps:
       - uses: actions/checkout@v1
