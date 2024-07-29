@@ -1,0 +1,37 @@
+name: Build & upload to Firebase App Distribution
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_notes:
+        type: string
+        required: true
+        default: "Manual Debug Build"
+        description: Debug release for ${{ matrix.product }}${{ matrix.sidePersona }}
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        product: ['bike', 'car']
+        sidePersona: ['client', 'admin']
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: build release assembleDebug
+        run: ./gradlew :app:assembleDebug{{ matrix.product }}${{ matrix.sidePersona }}Debug
+      - name: upload artifact to Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{ secrets['FIREBASE_APP_ID_' + matrix.product.toUpperCase() + '_' + matrix.sidePersona.toUpperCase()] }}
+          serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
+          groups: Teste whiteLabelApp
+          file: app/build/outputs/apk/${{ matrix.product }}${{ matrix.sidePersona }}/debug/app-${{ matrix.product }}-${{ matrix.sidePersona }}-debug.apk
+          releaseNotes:
