@@ -76,6 +76,6 @@ jobs:
         with:
           appId: ${{ env.APP_ID }}
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
-          groups: "Teste whiteLabelApp"
+          groups: "teste-whitelabelapp"
           file: ${{ env.APK_PATH }}
           releaseNotes: ${{ inputs.release_notes }}
