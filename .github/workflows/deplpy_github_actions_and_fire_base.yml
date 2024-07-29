@@ -46,7 +46,7 @@ jobs:
           PRODUCT=${{ matrix.product }}
           SIDEPERSONA=${{ matrix.sidePersona }}
           VARIANT_NAME="${PRODUCT}${SIDEPERSONA^}"
-          APK_PATH="app/build/outputs/apk/${VARIANT_NAME}/release/app-${VARIANT_NAME}-release-unsigned.apk"
+          APK_PATH="app/build/outputs/apk/${VARIANT_NAME}/release/app-${PRODUCT}-${SIDEPERSONA}-release-unsigned.apk"
           echo "APK_PATH=$APK_PATH" >> $GITHUB_ENV
           if [ ! -f $APK_PATH ]; then
             echo "APK not found at $APK_PATH"
