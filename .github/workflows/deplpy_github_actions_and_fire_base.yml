@@ -34,12 +34,6 @@ jobs:
           VARIANT_NAME="${PRODUCT}${SIDEPERSONA^}Release"
           ./gradlew :app:assemble${VARIANT_NAME}
 
-      - name: Set environment variable for APP_ID
-        run: |
-          PRODUCT=${{ matrix.product }}
-          SIDEPERSONA=${{ matrix.sidePersona }}
-          APP_ID="FIREBASE_APP_ID_${PRODUCT^^}_${SIDEPERSONA^^}"
-          echo "APP_ID=$APP_ID" >> $GITHUB_ENV
 
       - name: Verify APK exists
         run: |
@@ -48,6 +42,8 @@ jobs:
           VARIANT_NAME="${PRODUCT}${SIDEPERSONA^}"
           APK_PATH="app/build/outputs/apk/${VARIANT_NAME}/release/app-${PRODUCT}-${SIDEPERSONA}-release-unsigned.apk"
           echo "APK_PATH=$APK_PATH" >> $GITHUB_ENV
+          echo "PATH APK $APK_PATH"
+
           if [ ! -f $APK_PATH ]; then
             echo "APK not found at $APK_PATH"
             exit 1
@@ -56,7 +52,7 @@ jobs:
       - name: Upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
-          appId: ${{ secrets.APP_ID }}
+          appId: FIREBASE_APP_ID_${matrix.product ^^}_${matrix.sidePersona ^^}
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: "Teste whiteLabelApp"
           file: ${{ env.APK_PATH }}
