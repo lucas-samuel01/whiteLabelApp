@@ -38,13 +38,21 @@ jobs:
           PRODUCT=${{ matrix.product }}
           SIDEPERSONA=${{ matrix.sidePersona }}
           APP_ID_KEY="FIREBASE_APP_ID_${PRODUCT^^}_${SIDEPERSONA^^}"
-          echo "APP_ID=${{ secrets[${APP_ID_KEY}] }}" >> $GITHUB_ENV
+          echo "APP_ID_KEY=$APP_ID_KEY" >> $GITHUB_ENV
+        shell: bash
+
+      - name: Set APP_ID from secrets
+        run: |
+          APP_ID=${{ secrets[env.APP_ID_KEY] }}
+          echo "APP_ID=$APP_ID" >> $GITHUB_ENV
+        shell: bash
 
       - name: Verify APP_ID
         run: |
           if [ -z "${{ env.APP_ID }}" ]; then
             echo "APP_ID is not set or invalid"
             exit 1
+          fi
 
       - name: Verify APK exists
         run: |
@@ -56,6 +64,7 @@ jobs:
           if [ ! -f $APK_PATH ]; then
             echo "APK not found at $APK_PATH"
             exit 1
+          fi
 
       - name: Print APP_ID and APK_PATH
         run: |
