@@ -52,7 +52,7 @@ jobs:
       - name: Upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
-          appId: ${{secrets.FIREBASE_APP_ID_${matrix.product ^^}_${matrix.sidePersona ^^}}
+          appId: ${{secrets.FIREBASE_APP_ID_${matrix.product ^^}_${matrix.sidePersona ^^}}}
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: "Teste whiteLabelApp"
           file: ${{ env.APK_PATH }}
