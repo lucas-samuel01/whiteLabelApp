@@ -25,7 +25,7 @@ jobs:
         with:
           java-version: 17
       - name: build release assembleRelease
-        run: ./gradlew :app:assembleRelease{{ matrix.product }}${{ matrix.sidePersona }}Release
+        run: ./gradlew :app:assemble{{ matrix.product }}${{ matrix.sidePersona }}Release
 
       - name: Set environment variable for APP_ID
         run: |
