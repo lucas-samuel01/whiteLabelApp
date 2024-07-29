@@ -34,6 +34,12 @@ jobs:
           VARIANT_NAME="${PRODUCT}${SIDEPERSONA^}Release"
           ./gradlew :app:assemble${VARIANT_NAME}
 
+      - name: Set environment variable for FIREBASE APP_ID
+        run: |
+          PRODUCT=${{ matrix.product }}
+          SIDEPERSONA=${{ matrix.sidePersona }}
+          APP_ID="FIREBASE_APP_ID_${PRODUCT^^}_${SIDEPERSONA^^}"
+          echo "FIRE BAE APP ID $APP_ID" 
 
       - name: Verify APK exists
         run: |
@@ -52,7 +58,7 @@ jobs:
       - name: Upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
-          appId: ${{secrets.${FIREBASE_APP_ID_${matrix.product ^^}_${matrix.sidePersona ^^}}}}
+          appId: ${{secrets.${APP_ID}}
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: "Teste whiteLabelApp"
           file: ${{ env.APK_PATH }}
