@@ -16,30 +16,48 @@ jobs:
     strategy:
       matrix:
         product: ['bike', 'car']
-        sidePersona: ['Client', 'Admin']
+        sidePersona: ['client', 'admin']
 
     steps:
-      - uses: actions/checkout@v1
-      - name: set up JDK 17
-        uses: actions/setup-java@v1
+      - uses: actions/checkout@v2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
         with:
-          java-version: 17
-      - name: build release assembleRelease
-        run: ./gradlew :app:assemble${{ matrix.product }}${{ matrix.sidePersona }}Release
+          distribution: 'adopt'
+          java-version: '17'
+
+      - name: Build release
+        run: |
+          PRODUCT=${{ matrix.product }}
+          SIDEPERSONA=${{ matrix.sidePersona }}
+          VARIANT_NAME="${PRODUCT}${SIDEPERSONA^}Release"
+          ./gradlew :app:assemble${VARIANT_NAME}
 
       - name: Set environment variable for APP_ID
         run: |
-         PRODUCT=${{ matrix.product }}
-         SIDEPERSONA=${{ matrix.sidePersona }}
-         APP_ID="FIREBASE_APP_ID_${PRODUCT^^}_${SIDEPERSONA^^}"
-         echo "APP_ID=$APP_ID" >> $GITHUB_ENV
+          PRODUCT=${{ matrix.product }}
+          SIDEPERSONA=${{ matrix.sidePersona }}
+          APP_ID="FIREBASE_APP_ID_${PRODUCT^^}_${SIDEPERSONA^^}"
+          echo "APP_ID=$APP_ID" >> $GITHUB_ENV
 
+      - name: Verify APK exists
+        run: |
+          PRODUCT=${{ matrix.product }}
+          SIDEPERSONA=${{ matrix.sidePersona }}
+          VARIANT_NAME="${PRODUCT}${SIDEPERSONA^}"
+          APK_PATH="app/build/outputs/apk/${VARIANT_NAME}/release/app-${VARIANT_NAME}-release-unsigned.apk"
+          echo "APK_PATH=$APK_PATH" >> $GITHUB_ENV
+          if [ ! -f $APK_PATH ]; then
+            echo "APK not found at $APK_PATH"
+            exit 1
+          fi
 
-      - name: upload artifact to Firebase App Distribution
+      - name: Upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
-          appId: ${{ secrets[env.APP_ID] }}
+          appId: ${{ secrets.APP_ID }}
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
-          groups: Teste whiteLabelApp
-          file: app/build/outputs/apk/${{ matrix.product }}${{ matrix.sidePersona }}/release/app-${{ matrix.product }}-${{ matrix.sidePersona }}-release-unsigned.apk
-          releaseNotes: ${{inputs.release_notes}}
+          groups: "Teste whiteLabelApp"
+          file: ${{ env.APK_PATH }}
+          releaseNotes: ${{ inputs.release_notes }}
