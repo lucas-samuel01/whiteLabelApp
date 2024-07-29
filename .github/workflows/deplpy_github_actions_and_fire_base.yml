@@ -27,10 +27,15 @@ jobs:
           java-version: 11
       - name: build release assembleDebug
         run: ./gradlew :app:assembleDebug{{ matrix.product }}${{ matrix.sidePersona }}Debug
+
+      - name: Set environment variable for APP_ID
+        run: echo "APP_ID=FIREBASE_APP_ID_${{ matrix.product.toUpperCase() }}_${{ matrix.sidePersona.toUpperCase() }}" >> $GITHUB_ENV
+
+
       - name: upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
-          appId: ${{ secrets['FIREBASE_APP_ID_' + matrix.product.toUpperCase() + '_' + matrix.sidePersona.toUpperCase()] }}
+          appId: ${{ secrets[env.APP_ID] }}
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: Teste whiteLabelApp
           file: app/build/outputs/apk/${{ matrix.product }}${{ matrix.sidePersona }}/debug/app-${{ matrix.product }}-${{ matrix.sidePersona }}-debug.apk
