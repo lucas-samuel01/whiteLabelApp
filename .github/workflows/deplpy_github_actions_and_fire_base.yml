@@ -41,5 +41,5 @@ jobs:
           appId: ${{ secrets[env.APP_ID] }}
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: Teste whiteLabelApp
-          file: app/build/outputs/apk/${{ matrix.product }}${{ matrix.sidePersona }}/release/app-${{ matrix.product }}-${{ matrix.sidePersona }}-release.apk
+          file: app/build/outputs/apk/${{ matrix.product }}${{ matrix.sidePersona }}/release/app-${{ matrix.product }}-${{ matrix.sidePersona }}-release-unsigned.apk
           releaseNotes: ${{inputs.release_notes}}
